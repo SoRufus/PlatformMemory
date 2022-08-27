@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Other")]
     [SerializeField] private Transform cameraObj = null;
     private InputController input = null;
+    private GameplayManager gameplayManager = null;
     private Rigidbody rigid = null;
     private bool isReadyToJump = true;
 
@@ -27,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         input = InputController.Instance;
+        gameplayManager = GameplayManager.Instance;
     }
 
     void FixedUpdate()
@@ -37,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     private void ProcessMovement()
     {
         if (input == null) return;
+        if (gameplayManager.ActualGameState != GameState.Game) return;
 
         Movement();
         LimitVelocity();

@@ -7,6 +7,7 @@ public class InputData
 	public Vector2 Movement;
 	public Vector2 Look;
 	public bool Jump;
+	public bool Escape;
 }
 
 [RequireComponent(typeof(PlayerInput))]
@@ -39,27 +40,38 @@ public class InputController : MonoBehaviour
 		playerInput.onActionTriggered += OnPlayerInputActionTriggered;
 	}
 
-	private void OnPlayerInputActionTriggered(InputAction.CallbackContext context)
+    private void OnPlayerInputActionTriggered(InputAction.CallbackContext context)
     {
-		if (context.action.name == "Move")
+		switch (context.action.name)
         {
-			InputData.Movement = context.action.ReadValue<Vector2>();
-		}
-
-		if (context.action.name == "Look")
-        {
-			InputData.Look = context.action.ReadValue<Vector2>();
-		}
-
-		if (context.action.name == "Jump")
-        {
-			InputData.Jump = true;
-			Invoke(nameof(ResetJump), 0.05f);
+			case "Move":
+                {
+					InputData.Movement = context.action.ReadValue<Vector2>();
+					break;
+                }
+			case "Look":
+				{
+					InputData.Look = context.action.ReadValue<Vector2>();
+					break;
+				}
+			case "Jump":
+				{
+					if (context.performed) InputData.Jump = true;
+					Invoke(nameof(ResetButtons), 0.02f);
+					break;
+				}
+			case "Escape":
+				{
+					if (context.performed) InputData.Escape = true;
+					Invoke(nameof(ResetButtons), 0.001f);
+					break;
+				}
 		}
     }
 
-	private void ResetJump()
+	private void ResetButtons()
     {
 		InputData.Jump = false;
+		InputData.Escape = false;
     }
 }
