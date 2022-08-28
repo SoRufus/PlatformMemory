@@ -29,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         input = InputController.Instance;
         gameplayManager = GameplayManager.Instance;
+
+        Respawn();
     }
 
     void FixedUpdate()
@@ -42,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         if (gameplayManager.ActualGameState != GameState.Game) return;
 
         Lose();
+        Restart();
         Win();
         Movement();
         LimitVelocity();
@@ -97,14 +100,30 @@ public class PlayerMovement : MonoBehaviour
     private void Lose()
     {
         if (!IsLost()) return;
-        transform.position = new Vector3(0, 0, 0);
+
+        Respawn();
         gameplayManager.changeGameState(GameState.Lose);
+    }
+
+    private void Restart()
+    {
+        if (!input.InputData.Restart) return;
+
+        Respawn();
+        gameplayManager.changeGameState(GameState.Lose);
+    }
+
+    private void Respawn()
+    {
+        transform.position = new Vector3(0, 0, 0);
+        cameraObj.transform.localRotation = Quaternion.Euler(-30, 0, 0);
+        transform.localRotation = Quaternion.Euler(0, -180, 0);
     }
 
     private void Win()
     {
         if (!IsWon()) return;
-        transform.position = new Vector3(0, 0, 0);
+        Respawn();
         gameplayManager.changeGameState(GameState.Win);
     }
 

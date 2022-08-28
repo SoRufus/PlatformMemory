@@ -25,7 +25,7 @@ public class ScreenController : MonoBehaviour
     private void ToggleLight(bool left)
     {
         isLeft = left;
-        Invoke(nameof(ToggleLightAfterDelay), levelManager.GetCurrentLevelData().previewTime);
+        Invoke(nameof(ToggleLightAfterDelay), levelManager.GetCurrentLevelData().previewTime * 0.3f);
     }
 
     private void ToggleLightAfterDelay()

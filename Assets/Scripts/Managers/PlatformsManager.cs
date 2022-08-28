@@ -68,7 +68,7 @@ public class PlatformsManager : MonoBehaviour
 		if (correctPlatformIndex == correctPlatforms.Count) correctPlatformIndex = 0;
     }
 
-	private void RestartLevel(GameState state)
+	private void RestartLevel(GameState state)  
     {
 		if (state != GameState.Lose) return;
 

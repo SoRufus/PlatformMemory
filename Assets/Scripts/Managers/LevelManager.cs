@@ -9,6 +9,8 @@ public class Level
 
 public class LevelManager : MonoBehaviour
 {
+	public int CurrentLevelIndex => currentLevelIndex;
+	public int DeathCounter => deathCounter;
 	public Level CurrentLevel => currentLevel;
 
 	[SerializeField] private List<LevelData> levels = new List<LevelData>();
@@ -16,6 +18,7 @@ public class LevelManager : MonoBehaviour
 	private GameplayManager gameplayManager = null;
 	private Level currentLevel = null;
 	private int currentLevelIndex = 0;
+	private int deathCounter = 0;
 
 	#region Singleton
 	public static LevelManager Instance { get { return instance; } }
@@ -44,6 +47,7 @@ public class LevelManager : MonoBehaviour
     {
 		gameplayManager = GameplayManager.Instance;
 		gameplayManager.gameStateChangedEvent.AddListener(NextLevel);
+		gameplayManager.gameStateChangedEvent.AddListener(Lose);
 
 	}
 
@@ -72,5 +76,13 @@ public class LevelManager : MonoBehaviour
 
 		currentLevelIndex++;
 		currentLevel = GenerateLevel();
+		deathCounter = 0;
+	}
+
+	private void Lose(GameState state)
+    {
+		if (state != GameState.Lose) return;
+
+		deathCounter++;
 	}
 }

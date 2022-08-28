@@ -8,6 +8,7 @@ public class InputData
 	public Vector2 Look;
 	public bool Jump;
 	public bool Escape;
+	public bool Restart;
 }
 
 [RequireComponent(typeof(PlayerInput))]
@@ -66,6 +67,12 @@ public class InputController : MonoBehaviour
 					Invoke(nameof(ResetButtons), 0.001f);
 					break;
 				}
+			case "Restart":
+                {
+					if (context.performed) InputData.Restart = true;
+					Invoke(nameof(ResetButtons), 0.02f);
+					break;
+				}
 		}
     }
 
@@ -73,5 +80,6 @@ public class InputController : MonoBehaviour
     {
 		InputData.Jump = false;
 		InputData.Escape = false;
+		InputData.Restart = false;
     }
 }
