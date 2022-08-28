@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -15,8 +12,10 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Ground Check")]
     [SerializeField] private Transform floorCheckPoint = null;
-    [SerializeField] private LayerMask floorLayer = default;
     [SerializeField] private float checkFloorRadius = 0.5f;
+    [SerializeField] private LayerMask floorLayer = default;
+    [SerializeField] private LayerMask loseLayer = default;
+    [SerializeField] private LayerMask winLayer = default;
 
     [Header("Other")]
     [SerializeField] private Transform cameraObj = null;
@@ -42,10 +41,13 @@ public class PlayerMovement : MonoBehaviour
         if (input == null) return;
         if (gameplayManager.ActualGameState != GameState.Game) return;
 
+        Lose();
+        Win();
         Movement();
         LimitVelocity();
         Look();
         Jump();
+        Fall();
     }
 
     private void Movement()
@@ -85,9 +87,40 @@ public class PlayerMovement : MonoBehaviour
         isReadyToJump = true;
     }
 
+    private void Fall()
+    {
+        if (rigid.velocity.y > -4f) return;
+
+        rigid.velocity -= new Vector3(0, 1f, 0);
+    }
+
+    private void Lose()
+    {
+        if (!IsLost()) return;
+        transform.position = new Vector3(0, 0, 0);
+        gameplayManager.changeGameState(GameState.Lose);
+    }
+
+    private void Win()
+    {
+        if (!IsWon()) return;
+        transform.position = new Vector3(0, 0, 0);
+        gameplayManager.changeGameState(GameState.Win);
+    }
+
     private bool IsGrounded()
     {
         return Physics.CheckSphere(floorCheckPoint.position, checkFloorRadius, floorLayer, QueryTriggerInteraction.Ignore);
+    }
+
+    private bool IsLost()
+    {
+        return Physics.CheckSphere(floorCheckPoint.position, checkFloorRadius, loseLayer, QueryTriggerInteraction.Ignore);
+    }
+
+    private bool IsWon()
+    {
+        return Physics.CheckSphere(floorCheckPoint.position, checkFloorRadius, winLayer, QueryTriggerInteraction.Ignore);
     }
 
     private void Look()

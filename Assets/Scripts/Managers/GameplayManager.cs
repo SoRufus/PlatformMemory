@@ -24,9 +24,10 @@ public class GameplayManager : MonoBehaviour
 	#endregion
 
 	public GameState ActualGameState { get; private set; }
-	public UnityAction<GameState> changeGameState = null;
+	public UnityAction<GameState> changeGameState { get; private set; }
+	public UnityEvent<GameState> gameStateChangedEvent { get; private set; } = new();
 
-    private void Start()
+	private void Start()
     {
 		ChangeGameState(GameState.Game);
     }
@@ -44,6 +45,7 @@ public class GameplayManager : MonoBehaviour
                 {
 					Cursor.lockState = CursorLockMode.Locked;
 					Cursor.visible = false;
+					ActualGameState = state;
 					break;
                 }
 
@@ -51,10 +53,22 @@ public class GameplayManager : MonoBehaviour
                 {
 					Cursor.lockState = CursorLockMode.None;
 					Cursor.visible = true;
+					ActualGameState = state;
 					break;
                 }
+			case GameState.Lose:
+                {
+					ActualGameState = GameState.Game;
+					break;
+                }
+			case GameState.Win:
+                {
+					ActualGameState = GameState.Game;
+					break;
+                }
+;
 		}
 
-		ActualGameState = state;
+		gameStateChangedEvent.Invoke(state);
 	}
 }

@@ -20,7 +20,7 @@ public class PlatformController : MonoBehaviour
     public void Highlight()
     {
         animator.SetBool("Light", true);
-        Invoke(nameof(Fade), levelManager.GetCurrentLevelData().fadeSpeed);
+        Invoke(nameof(Fade), levelManager.GetCurrentLevelData().previewTime);
     }
 
     private void Fade()

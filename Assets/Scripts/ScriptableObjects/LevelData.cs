@@ -4,6 +4,5 @@ public class LevelData : ScriptableObject
 {
     public int numberOfTiles;
     public int enemyTurrets;
-    public float previewSpeed;
-    public float fadeSpeed;
+    public float previewTime;
 }

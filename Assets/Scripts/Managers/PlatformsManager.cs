@@ -4,11 +4,12 @@ using UnityEngine.Events;
 
 public class PlatformsManager : MonoBehaviour
 {
-	public UnityEvent<bool> HighLightPlatformEvent { get; private set; }
+	public UnityEvent<bool> HighLightPlatformEvent { get; private set; } = new();
 
 	private List<PlatformController> platformsOnScene = new();
 	private List<PlatformController> correctPlatforms = new();
 	private LevelManager levelManager = null;
+	private GameplayManager gameplayManager = null;
 	private int correctPlatformIndex = 0;
 
 	#region Singleton
@@ -31,8 +32,11 @@ public class PlatformsManager : MonoBehaviour
 
     private void Start()
     {
+		gameplayManager = GameplayManager.Instance;
 		levelManager = LevelManager.Instance;
-		HighLightPlatformEvent = new();
+
+		gameplayManager.gameStateChangedEvent.AddListener(RestartLevel);
+		gameplayManager.gameStateChangedEvent.AddListener(NextLevel);
 	}
 
 	public void AddPlatform(PlatformController platform)
@@ -52,7 +56,7 @@ public class PlatformsManager : MonoBehaviour
     {
 		for(int i = 0; i < correctPlatforms.Count; i++)
         {
-			Invoke(nameof(HighLightPlatformAfterDelay), levelManager.GetCurrentLevelData().previewSpeed * i);
+			Invoke(nameof(HighLightPlatformAfterDelay), levelManager.GetCurrentLevelData().previewTime * i + 1f);
         }
 	}
 
@@ -64,11 +68,31 @@ public class PlatformsManager : MonoBehaviour
 		if (correctPlatformIndex == correctPlatforms.Count) correctPlatformIndex = 0;
     }
 
-	private void RestartGame()
+	private void RestartLevel(GameState state)
     {
-		foreach(PlatformController platform in platformsOnScene)
+		if (state != GameState.Lose) return;
+
+		correctPlatformIndex = 0;
+		CancelInvoke();
+		HighLightPath();
+		foreach (PlatformController platform in platformsOnScene)
         {
 			platform.gameObject.SetActive(true);
         }
+    }
+
+	private void NextLevel(GameState state)
+    {
+		if (state != GameState.Win) return;
+
+		foreach(PlatformController platform in platformsOnScene)
+        {
+			Destroy(platform.gameObject);
+        }
+
+		CancelInvoke();
+		platformsOnScene.Clear();
+		correctPlatforms.Clear();
+		correctPlatformIndex = 0;
     }
 }

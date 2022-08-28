@@ -14,12 +14,30 @@ public class PlatformSpawner : MonoBehaviour
 
     private LevelManager levelManager = null;
     private PlatformsManager platformsManager = null;
+    private GameplayManager gameplayManager = null;
+
+    private GameObject finishObject = null;
 
     void Start()
     {
         platformsManager = PlatformsManager.Instance;
         levelManager = LevelManager.Instance;
-        SpawnTiles();
+        gameplayManager = GameplayManager.Instance;
+
+        gameplayManager.gameStateChangedEvent.AddListener(SpawnTiles);
+        Invoke(nameof(SpawnTiles), 0.01f);
+    }
+
+    private void SpawnTiles(GameState state)
+    {
+        if (state != GameState.Win) return;
+
+        Invoke(nameof(SpawnTiles),0.1f);
+
+        if (finishObject == null) return;
+
+        Destroy(finishObject.gameObject);
+        finishObject = null;
     }
 
     private void SpawnTiles()
@@ -44,7 +62,7 @@ public class PlatformSpawner : MonoBehaviour
             platformsManager.AddPlatform(rightPlatform);
             platformsManager.AddPlatform(leftPlatform);
 
-            if (i == level.numberOfTiles - 1) Instantiate(finishPrefab, spawnPoint.position + platformDistance, finishPrefab.transform.rotation);
+            if (i == level.numberOfTiles - 1) finishObject = Instantiate(finishPrefab, spawnPoint.position + platformDistance, finishPrefab.transform.rotation);
         }
 
         platformsManager.HighLightPath();

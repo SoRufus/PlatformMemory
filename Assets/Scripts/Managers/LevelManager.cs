@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour
 
 	[SerializeField] private List<LevelData> levels = new List<LevelData>();
 
+	private GameplayManager gameplayManager = null;
 	private Level currentLevel = null;
 	private int currentLevelIndex = 0;
 
@@ -39,15 +40,17 @@ public class LevelManager : MonoBehaviour
 		currentLevel = GenerateLevel();
 	}
 
-	public LevelData GetCurrentLevelData()
+    void Start()
+    {
+		gameplayManager = GameplayManager.Instance;
+		gameplayManager.gameStateChangedEvent.AddListener(NextLevel);
+
+	}
+
+    public LevelData GetCurrentLevelData()
     {
 		return levels[currentLevelIndex];
     }
-
-	private void ClearLevel()
-    {
-		currentLevel = null;
-	}
 
 	private Level GenerateLevel()
 	{
@@ -61,5 +64,13 @@ public class LevelManager : MonoBehaviour
 		}
 
 		return lvl;
+	}
+
+	private void NextLevel(GameState state)
+    {
+		if (state != GameState.Win) return;
+
+		currentLevelIndex++;
+		currentLevel = GenerateLevel();
 	}
 }

@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e450c3eee4c98914b90261c8321e8ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceBetweenSideTiles: 7
-  distanceBetweenFrontTiles: 6
+  distanceBetweenSideTiles: 5
+  distanceBetweenFrontTiles: 5
   finishPrefab: {fileID: 904832123888812907, guid: 924b6c033a850534089d814bc02c4e63, type: 3}
   platformPrefab: {fileID: 3138199474188075343, guid: 7e4fe548f2f1e334981f84e170dda032, type: 3}
   spawnPoint: {fileID: 876523626661249741}

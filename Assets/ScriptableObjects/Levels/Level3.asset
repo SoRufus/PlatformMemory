@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Level3
   m_EditorClassIdentifier: 
   numberOfTiles: 6
-  previewSpeed: 1
-  fadeSpeed: 1
   enemyTurrets: 0
+  previewTime: 0.8
