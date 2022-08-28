@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 978722311de6a2541a1db43a76861e50, type: 3}
   m_Name: Level8
   m_EditorClassIdentifier: 
-  numberOfTiles: 25
+  numberOfTiles: 14
   enemyTurrets: 0
-  previewTime: 1
+  previewTime: 0.5

@@ -66,6 +66,13 @@ public class GameplayManager : MonoBehaviour
 					ActualGameState = GameState.Game;
 					break;
                 }
+			case GameState.End:
+                {
+					Cursor.lockState = CursorLockMode.None;
+					Cursor.visible = true;
+					ActualGameState = state;
+					break;
+                }
 ;
 		}
 

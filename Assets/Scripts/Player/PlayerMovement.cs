@@ -19,8 +19,10 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Other")]
     [SerializeField] private Transform cameraObj = null;
+
     private InputController input = null;
     private GameplayManager gameplayManager = null;
+    private LevelManager levelManager = null;
     private Rigidbody rigid = null;
     private bool isReadyToJump = true;
 
@@ -29,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         input = InputController.Instance;
         gameplayManager = GameplayManager.Instance;
+        levelManager = LevelManager.Instance;
 
         Respawn();
     }
@@ -77,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
         if (!input.InputData.Jump) return;
         if (!IsGrounded()) return;
         if (!isReadyToJump) return;
+        if (rigid.velocity.y < -0.5f) return;
 
         Vector3 direction = transform.up * jumpForce;
         rigid.AddForce(direction * jumpForce * 1f * Time.fixedDeltaTime, ForceMode.Impulse);
@@ -124,7 +128,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!IsWon()) return;
         Respawn();
-        gameplayManager.changeGameState(GameState.Win);
+
+        if (levelManager.CurrentLevelIndex != levelManager.MaxLevel - 1) gameplayManager.changeGameState(GameState.Win);
+        else gameplayManager.changeGameState(GameState.End);
     }
 
     private bool IsGrounded()

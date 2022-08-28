@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlatformController : MonoBehaviour
 {
+    [SerializeField] private GameObject glassParticle = null;
 
     public bool Breakable { get; set; }
     public bool IsLeft { get; set; }
@@ -31,6 +32,9 @@ public class PlatformController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (!Breakable) return;
+
+        GameObject particle = Instantiate(glassParticle, transform.position, Quaternion.identity);
+        if (particle != null) Destroy(particle, 1f);
 
         gameObject.SetActive(false);
     }

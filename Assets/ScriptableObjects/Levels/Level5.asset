@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfTiles: 10
   enemyTurrets: 0
-  previewTime: 0.6
+  previewTime: 0.7

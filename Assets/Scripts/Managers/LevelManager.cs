@@ -9,6 +9,7 @@ public class Level
 
 public class LevelManager : MonoBehaviour
 {
+	public int MaxLevel => levels.Count;
 	public int CurrentLevelIndex => currentLevelIndex;
 	public int DeathCounter => deathCounter;
 	public Level CurrentLevel => currentLevel;
@@ -58,6 +59,8 @@ public class LevelManager : MonoBehaviour
 
 	private Level GenerateLevel()
 	{
+		deathCounter = 0;
+
 		Level lvl = new();
 		lvl.IsLeftBreakable = new();
 
@@ -76,7 +79,6 @@ public class LevelManager : MonoBehaviour
 
 		currentLevelIndex++;
 		currentLevel = GenerateLevel();
-		deathCounter = 0;
 	}
 
 	private void Lose(GameState state)
@@ -84,5 +86,11 @@ public class LevelManager : MonoBehaviour
 		if (state != GameState.Lose) return;
 
 		deathCounter++;
+	}
+
+	public void RestartGame()
+    {
+		currentLevelIndex = -1;
+		currentLevel = null;
 	}
 }

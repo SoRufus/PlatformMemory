@@ -25,6 +25,7 @@ public class PauseMenu : MonoBehaviour
     private void InputListener()
     {
         if (!input.InputData.Escape) return;
+        if (gameplayManager.ActualGameState == GameState.End) return;
 
         if (isPaused) ResumeGame();
         else PauseGame();

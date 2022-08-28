@@ -4,4 +4,5 @@ public enum GameState
     Game,
     Lose,
     Win,
+    End,
 }
