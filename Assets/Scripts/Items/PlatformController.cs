@@ -4,10 +4,34 @@ using UnityEngine;
 
 public class PlatformController : MonoBehaviour
 {
+
     public bool Breakable { get; set; }
+    public bool IsLeft { get; set; }
+
+    private LevelManager levelManager = null;
+    private Animator animator = null;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        levelManager = LevelManager.Instance;
+    }
+
+    public void Highlight()
+    {
+        animator.SetBool("Light", true);
+        Invoke(nameof(Fade), levelManager.GetCurrentLevelData().fadeSpeed);
+    }
+
+    private void Fade()
+    {
+        animator.SetBool("Light", false);
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (Breakable) Destroy(gameObject);
+        if (!Breakable) return;
+
+        gameObject.SetActive(false);
     }
 }

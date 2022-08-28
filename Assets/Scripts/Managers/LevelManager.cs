@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class Level
+{
+	public List<bool> IsLeftBreakable;
+}
+
 public class LevelManager : MonoBehaviour
 {
+	public Level CurrentLevel => currentLevel;
 
 	[SerializeField] private List<LevelData> levels = new List<LevelData>();
-	private int currentLevel = 0;
 
-	public LevelData GetCurrentLevel()
-    {
-		return levels[currentLevel];
-    }
+	private Level currentLevel = null;
+	private int currentLevelIndex = 0;
 
 	#region Singleton
 	public static LevelManager Instance { get { return instance; } }
@@ -29,7 +32,34 @@ public class LevelManager : MonoBehaviour
 			instance = this;
 		}
 	}
-	#endregion
+    #endregion
 
+    private void OnEnable()
+    {
+		currentLevel = GenerateLevel();
+	}
 
+	public LevelData GetCurrentLevelData()
+    {
+		return levels[currentLevelIndex];
+    }
+
+	private void ClearLevel()
+    {
+		currentLevel = null;
+	}
+
+	private Level GenerateLevel()
+	{
+		Level lvl = new();
+		lvl.IsLeftBreakable = new();
+
+		for (int i = 0; i < levels[currentLevelIndex].numberOfTiles; i++)
+		{
+			float random = Random.value;
+			lvl.IsLeftBreakable.Add(random > 0.5f);
+		}
+
+		return lvl;
+	}
 }

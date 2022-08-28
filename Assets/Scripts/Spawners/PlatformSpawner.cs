@@ -8,35 +8,45 @@ public class PlatformSpawner : MonoBehaviour
     [SerializeField] private float distanceBetweenFrontTiles = 0.5f;
 
     [Header("Other")]
-    [SerializeField] private PlatformController platformPrefab = null;
+    [SerializeField] private GameObject finishPrefab = null;
+    [SerializeField] private GameObject platformPrefab = null;
     [SerializeField] private Transform spawnPoint = null;
-    [SerializeField] private GameObject spawnedPlatformsContainer = null;
 
     private LevelManager levelManager = null;
+    private PlatformsManager platformsManager = null;
 
     void Start()
     {
+        platformsManager = PlatformsManager.Instance;
         levelManager = LevelManager.Instance;
         SpawnTiles();
     }
 
     private void SpawnTiles()
     {
-        LevelData level = levelManager.GetCurrentLevel();
+        LevelData level = levelManager.GetCurrentLevelData();
 
         for (int i = 0; i < level.numberOfTiles; i++)
         {
-            Vector3 frontTileDistance = new Vector3(0.0f, 0.0f, spawnPoint.position.z - distanceBetweenFrontTiles * i);
-            Vector3 sideTileDistance = new Vector3(spawnPoint.position.x + distanceBetweenSideTiles, 0.0f , 0.0f);
+            Vector3 frontTileDistance = new Vector3 (0.0f, 0.0f, spawnPoint.position.z - distanceBetweenFrontTiles * i);
+            Vector3 sideTileDistance = new Vector3 (spawnPoint.position.x + distanceBetweenSideTiles, 0.0f , 0.0f);
+            Vector3 platformDistance = new Vector3(2f, 4.5f, spawnPoint.position.z - (distanceBetweenFrontTiles * i - 2f));
 
-            PlatformController rightPlatform = Instantiate(platformPrefab.gameObject, spawnPoint.position + frontTileDistance, Quaternion.identity).GetComponent<PlatformController>();
-            PlatformController leftPlatform = Instantiate(platformPrefab.gameObject, spawnPoint.position + frontTileDistance + sideTileDistance, Quaternion.identity).GetComponent<PlatformController>();
+            PlatformController rightPlatform = Instantiate(platformPrefab, spawnPoint.position + frontTileDistance, Quaternion.identity).GetComponent<PlatformController>();
+            PlatformController leftPlatform = Instantiate(platformPrefab, spawnPoint.position + frontTileDistance + sideTileDistance, Quaternion.identity).GetComponent<PlatformController>();
 
-            if (Random.value > 0.5) rightPlatform.Breakable = true;
-            else leftPlatform.Breakable = true;
+            rightPlatform.Breakable = !levelManager.CurrentLevel.IsLeftBreakable[i];
+            leftPlatform.Breakable = levelManager.CurrentLevel.IsLeftBreakable[i];
 
-            rightPlatform.transform.SetParent(spawnedPlatformsContainer.transform);
-            leftPlatform.transform.SetParent(spawnedPlatformsContainer.transform);
+            rightPlatform.IsLeft = false;
+            leftPlatform.IsLeft = true;
+
+            platformsManager.AddPlatform(rightPlatform);
+            platformsManager.AddPlatform(leftPlatform);
+
+            if (i == level.numberOfTiles - 1) Instantiate(finishPrefab, spawnPoint.position + platformDistance, finishPrefab.transform.rotation);
         }
+
+        platformsManager.HighLightPath();
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     public int numberOfTiles;
-    public int previewSpeed;
     public int enemyTurrets;
+    public float previewSpeed;
+    public float fadeSpeed;
 }
