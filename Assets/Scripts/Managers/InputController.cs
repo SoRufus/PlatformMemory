@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Events;
-
 public class InputData
 {
 	public Vector2 Movement;

@@ -1336,30 +1336,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8081306446676244284, guid: 65cbe24ff5e774643b85e44a47693368, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9659259
-      objectReference: {fileID: 0}
-    - target: {fileID: 8081306446676244284, guid: 65cbe24ff5e774643b85e44a47693368, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.258819
-      objectReference: {fileID: 0}
-    - target: {fileID: 8081306446676244284, guid: 65cbe24ff5e774643b85e44a47693368, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -30
-      objectReference: {fileID: 0}
-    - target: {fileID: 8081306447782938129, guid: 65cbe24ff5e774643b85e44a47693368, type: 3}
-      propertyPath: m_Height
-      value: 3.3518195
-      objectReference: {fileID: 0}
-    - target: {fileID: 8081306447782938129, guid: 65cbe24ff5e774643b85e44a47693368, type: 3}
-      propertyPath: m_Center.y
-      value: -0.32409024
-      objectReference: {fileID: 0}
-    - target: {fileID: 8081306447782938131, guid: 65cbe24ff5e774643b85e44a47693368, type: 3}
-      propertyPath: checkFloorRadius
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 8081306447782938133, guid: 65cbe24ff5e774643b85e44a47693368, type: 3}
       propertyPath: m_RootOrder
       value: 2
