@@ -74,9 +74,10 @@ public class LevelSpawner : MonoBehaviour
 
         for (int i = 0; i < level.enemyTurrets; i++)
         {
-            Vector3 frontTileDistance = new Vector3(0.0f, 0.0f, spawnPoint.position.z - distanceBetweenFrontTiles * levelManager.CurrentLevel.TurretPlacement[i]);
-            Vector3 sideTileDistance = new Vector3(spawnPoint.position.x + distanceBetweenSideTiles * 4, 0.0f, 0.0f);
-            GameObject turret = Instantiate(turretPrefab, spawnPoint.position + frontTileDistance + sideTileDistance, Quaternion.identity);
+            Vector3 frontTurretDistance = new Vector3(0.0f, 0.0f, spawnPoint.position.z - distanceBetweenFrontTiles * levelManager.CurrentLevel.TurretPlacement[i]);
+            Vector3 leftSideTurretDistance = new Vector3(spawnPoint.position.x + distanceBetweenSideTiles * 4, 0.0f, 0.0f);
+            Vector3 rightSideTurretDistance = new Vector3(spawnPoint.position.x - distanceBetweenSideTiles * 3, 0.0f, 0.0f);
+            GameObject turret = Random.value > 0.5f ? Instantiate(turretPrefab, spawnPoint.position + frontTurretDistance + leftSideTurretDistance, turretPrefab.transform.localRotation) : Instantiate(turretPrefab, spawnPoint.position + frontTurretDistance + rightSideTurretDistance, Quaternion.Euler(0, 180, 0));
 
             turretObjects.Add(turret);
         }
