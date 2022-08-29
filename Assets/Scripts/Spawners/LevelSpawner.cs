@@ -1,21 +1,25 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PlatformSpawner : MonoBehaviour
+public class LevelSpawner : MonoBehaviour
 {
     [Header("Config")]
     [SerializeField] private float distanceBetweenSideTiles = 0.5f;
     [SerializeField] private float distanceBetweenFrontTiles = 0.5f;
 
-    [Header("Other")]
+    [Header("Prefabs")]
     [SerializeField] private GameObject finishPrefab = null;
     [SerializeField] private GameObject platformPrefab = null;
+    [SerializeField] private GameObject turretPrefab = null;
+
+    [Header("Other")]
     [SerializeField] private Transform spawnPoint = null;
 
     private LevelManager levelManager = null;
     private PlatformsManager platformsManager = null;
     private GameplayManager gameplayManager = null;
 
+    private List<GameObject> turretObjects = new();
     private GameObject finishObject = null;
 
     void Start()
@@ -24,23 +28,26 @@ public class PlatformSpawner : MonoBehaviour
         levelManager = LevelManager.Instance;
         gameplayManager = GameplayManager.Instance;
 
-        gameplayManager.gameStateChangedEvent.AddListener(SpawnTiles);
-        Invoke(nameof(SpawnTiles), 0.01f);
+        gameplayManager.gameStateChangedEvent.AddListener(Spawn);
+        Invoke(nameof(Spawn), 0.01f);
     }
 
-    private void SpawnTiles(GameState state)
+    private void Spawn(GameState state)
     {
         if (state != GameState.Win) return;
 
-        Invoke(nameof(SpawnTiles),0.1f);
+        Invoke(nameof(Spawn),0.1f);
 
-        if (finishObject == null) return;
-
+        foreach (GameObject turret in turretObjects)
+        {
+            Destroy(turret);
+        }
         Destroy(finishObject.gameObject);
+        turretObjects.Clear();
         finishObject = null;
     }
 
-    private void SpawnTiles()
+    private void Spawn()
     {
         LevelData level = levelManager.GetCurrentLevelData();
 
@@ -63,6 +70,15 @@ public class PlatformSpawner : MonoBehaviour
             platformsManager.AddPlatform(leftPlatform);
 
             if (i == level.numberOfTiles - 1) finishObject = Instantiate(finishPrefab, spawnPoint.position + platformDistance, finishPrefab.transform.rotation);
+        }
+
+        for (int i = 0; i < level.enemyTurrets; i++)
+        {
+            Vector3 frontTileDistance = new Vector3(0.0f, 0.0f, spawnPoint.position.z - distanceBetweenFrontTiles * levelManager.CurrentLevel.TurretPlacement[i]);
+            Vector3 sideTileDistance = new Vector3(spawnPoint.position.x + distanceBetweenSideTiles * 4, 0.0f, 0.0f);
+            GameObject turret = Instantiate(turretPrefab, spawnPoint.position + frontTileDistance + sideTileDistance, Quaternion.identity);
+
+            turretObjects.Add(turret);
         }
 
         platformsManager.HighLightPath();

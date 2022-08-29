@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8081306446676244287}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.258819, y: 0, z: 0, w: 0.9659259}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32,7 +32,7 @@ Transform:
   - {fileID: 8081306448305254532}
   m_Father: {fileID: 8081306447782938133}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
 --- !u!114 &8081306446676244285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,7 +274,7 @@ MonoBehaviour:
   jumpForce: 12
   maxVerticalRotation: {x: -70, y: 70}
   floorCheckPoint: {fileID: 8081306446884186714}
-  checkFloorRadius: 0.3
+  checkFloorRadius: 0.1
   floorLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -312,9 +312,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1.0000002
+  m_Height: 3.3518195
   m_Direction: 1
-  m_Center: {x: 0, y: -1.4999999, z: 0}
+  m_Center: {x: 0, y: -0.32409024, z: 0}
 --- !u!1 &8081306448083208288
 GameObject:
   m_ObjectHideFlags: 0

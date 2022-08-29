@@ -5,6 +5,7 @@ using UnityEngine;
 public class Level
 {
 	public List<bool> IsLeftBreakable;
+	public List<int> TurretPlacement;
 }
 
 public class LevelManager : MonoBehaviour
@@ -63,12 +64,25 @@ public class LevelManager : MonoBehaviour
 
 		Level lvl = new();
 		lvl.IsLeftBreakable = new();
+		lvl.TurretPlacement = new();
 
 		for (int i = 0; i < levels[currentLevelIndex].numberOfTiles; i++)
 		{
 			float random = Random.value;
 			lvl.IsLeftBreakable.Add(random > 0.5f);
 		}
+
+		if(levels[currentLevelIndex].enemyTurrets > levels[currentLevelIndex].numberOfTiles)
+        {
+			Debug.Log("Too many turrets to spawn on this level");
+			return lvl;
+        }
+
+		for (int i = 0; i < levels[CurrentLevelIndex].enemyTurrets; i++)
+        {
+			int turretPlacement = Random.Range(i * levels[currentLevelIndex].numberOfTiles / levels[CurrentLevelIndex].enemyTurrets, ((i + 1) * levels[currentLevelIndex].numberOfTiles) / levels[CurrentLevelIndex].enemyTurrets);
+			lvl.TurretPlacement.Add(turretPlacement);
+        }
 
 		return lvl;
 	}

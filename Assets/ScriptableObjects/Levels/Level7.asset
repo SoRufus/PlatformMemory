@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Level7
   m_EditorClassIdentifier: 
   numberOfTiles: 12
-  enemyTurrets: 0
+  enemyTurrets: 2
   previewTime: 0.5

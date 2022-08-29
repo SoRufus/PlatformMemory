@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Level6
   m_EditorClassIdentifier: 
   numberOfTiles: 11
-  enemyTurrets: 0
+  enemyTurrets: 2
   previewTime: 0.6

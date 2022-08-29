@@ -6,3 +6,8 @@ public enum GameState
     Win,
     End,
 }
+
+public enum ObjectToSpawnType
+{ 
+    Bullet,
+}

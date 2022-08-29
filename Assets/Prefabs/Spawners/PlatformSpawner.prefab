@@ -49,6 +49,7 @@ MonoBehaviour:
   distanceBetweenFrontTiles: 5
   finishPrefab: {fileID: 904832123888812907, guid: 924b6c033a850534089d814bc02c4e63, type: 3}
   platformPrefab: {fileID: 3138199474188075343, guid: 7e4fe548f2f1e334981f84e170dda032, type: 3}
+  turretPrefab: {fileID: 1810812008100764320, guid: 206d43c068d0c434b8e1732a10de31ec, type: 3}
   spawnPoint: {fileID: 1998551868479500431}
 --- !u!1 &1998551868479500430
 GameObject:
