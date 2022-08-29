@@ -62,10 +62,16 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 direction = new Vector3(input.InputData.Movement.x, 0.0f, input.InputData.Movement.y).normalized;
         direction = transform.right * input.InputData.Movement.x + transform.forward * input.InputData.Movement.y;
+        
+        if(!IsGrounded() && Physics.CheckSphere(transform.position, 1.7f, floorLayer, QueryTriggerInteraction.Ignore))
+        {
+            direction.z = 0;
+            direction.x = 0;
+        }
 
         rigid.AddForce(direction * walkSpeed * 10f * Time.fixedDeltaTime, ForceMode.Force);
     }
-
+    
     private void LimitVelocity()
     {
         Vector3 velocity = new Vector3(rigid.velocity.x, 0.0f, rigid.velocity.z);
